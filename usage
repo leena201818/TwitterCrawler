@@ -1,0 +1,2 @@
+1. run in docker container,set the work directory
+sudo docker run -it -w /root/TwitterCrawler/ python:vim python /root/TwitterCrawler/twuserspider.py
