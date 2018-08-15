@@ -1,2 +1,14 @@
 1. run in docker container,set the work directory
 sudo docker run -it -w /root/TwitterCrawler/ python:vim python /root/TwitterCrawler/twuserspider.py
+
+
+===1、start the docker image
+sudo docker run -it python:tw3 /bin/bash
+===2、activet the http_proxy in the container
+source /etc/profile
+===3、copy the twitter developer account to the config.json in the container,or modify config.json with a new develop account
+open a new shell
+sudo docker cp path_to_new_account.config.json 222containerID:/root/TwitterCrawler/
+===4、run the crawler in the container
+python twuserspider.py
+
