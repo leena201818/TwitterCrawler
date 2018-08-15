@@ -63,7 +63,9 @@ class TaskServer:
         finally:
             mutex.release()
 
-    def _retrieveATaskuser(self,taskQueue,taskType):
+    def _retrieveATaskuser(self,taskQueueS,taskType):
+        import copy
+        taskQueue = copy.copy(taskQueueS)
         if taskQueue.empty():
             taskQueue = self.__twuserhelper.LoadTopNTask(10, taskType)
             print('reload {0} {1} task.'.format(taskQueue.qsize(), taskType))

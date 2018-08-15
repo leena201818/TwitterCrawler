@@ -18,11 +18,17 @@ class TWUserHelper:
                 line = line.strip()
                 if len(line) == 0:
                     continue
+                if line.startswith('#'):
+                    continue
                 now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 acount = line.split(',')
 
                 fbid = acount[0].strip('\ufeff')
-                name = acount[1].strip()
+                name = ''
+                if len(acount) > 1:
+                    name = acount[1].strip()
+                else:
+                    name = fbid
                 mail = ''
                 if len(acount) > 2:
                     mail = acount[2].strip()

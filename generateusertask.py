@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
 
     import os
-    fro = input('Where to generate the user task?:{1:Munual Seeds 2:Scrawed Friends'+os.linesep)
+    fro = input('Where to generate the user task?:{1:Munual Seeds 2:Scrawed Friends}'+os.linesep)
     sel = input('Input TaskType:{1:userInfo; 2:userBaseinfo; 3:userTimeline; 4:userFriends}'+os.linesep)
 
     tasktype = 'Facebook.userInfo'

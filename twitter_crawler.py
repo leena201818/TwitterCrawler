@@ -66,7 +66,7 @@ class TwitterCrawler(twython.Twython,metaclass=Singleton):
             apikeys.pop('oauth_token')
             apikeys.pop('oauth_token_secret')
             twitter = twython.Twython(apikeys['app_key'], apikeys['app_secret'], oauth_version=2)
-            access_token = twitter.obtain_access_token()
+            access_token = twitter.obtain_access_token() # obtain_accipiess_token
             kwargs['access_token'] = access_token
             apikeys.pop('app_secret')
         else:

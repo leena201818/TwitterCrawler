@@ -7,7 +7,7 @@ class MongoHelper:
         with open('config.json', 'r') as f:
             x = json.load(f)
             self._conn = MongoClient(host = x['mongoinfo']['dbIP'],port = int(x['mongoinfo']['dbPort']))
-            self._db = self._conn.twdb
+            self._db = self._conn.twitter
             self._db.authenticate(x['mongoinfo']['dbUser'], x['mongoinfo']['dbPwd'])
 
     def insertuser(self,users):
