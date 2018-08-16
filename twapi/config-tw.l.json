@@ -1,0 +1,28 @@
+{
+        "apikeys": {
+                "i0mf0rmer034": {
+                        "app_key": "pgplvZFXMYtx494iQD2UhXwat",
+                        "app_secret": "9dzDzuXmvyKfwQCspBTE6FBRiMmvN2MB3TytcPFpUa1olxdkMu",
+                        "oauth_token": "984036369688354816zZjZo2nFvh1XsWNORuS4NdAQturWFzl",
+                        "oauth_token_secret": "vxNnvyY3ijBToVMwTowJiHZ4soNcuuRq66CgUGHr3AL4E"
+                }
+        },
+
+        "serverinfo":{
+                "dbIP": "192.168.8.226",
+                "dbPort": "3306",
+                "dbUser": "test",
+                "dbPwd": "test",
+                "dbName":"twitterdb",
+                "serverIP": "192.168.8.226",
+                "serverPort": "8099"},
+        "mongoinfo":{
+                "dbIP": "192.168.8.100",
+                "dbPort": "27017",
+                "dbUser": "twitter",
+                "dbPwd": "twitter",
+                "dbName":"twitter"
+        }
+
+}
+
