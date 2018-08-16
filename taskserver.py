@@ -60,6 +60,10 @@ class TaskServer:
                 return self._retrieveATaskuser(self.userFriendsQueue,taskType)
 
             return common.TWTask(-1, 0, 'noneid', '0', '0', '3','name')  # def __init__(self,id,priority,fbid,tasktype,originalfbid,deep,name):
+        except Exception as exc:
+            time.sleep(10)
+            logger.error("exception: %s; when getATaskUser"%(exc))
+            exit(1)
         finally:
             mutex.release()
 

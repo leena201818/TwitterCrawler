@@ -55,7 +55,7 @@ def main(spiderType):
 
             taskid = task['id']
             if int(taskid) == -1:
-                logHelper.getLogger().info('No task to do,sleep a while.')
+                logHelper.getLogger().info('No [{0}] task to do,sleep a while.'.format(spiderType))
                 time.sleep(5)
                 continue
 
