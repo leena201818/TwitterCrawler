@@ -51,13 +51,17 @@ class TaskServer:
         try:
             # return common.TWTask(-1, 0, '919761698961', '0', '','3','name')
             if taskType == 'Twitter.userInfo':
-                return self._retrieveATaskuser(self.userInfoQueue,taskType)
+                t,self.userInfoQueue = self._retrieveATaskuser(self.userInfoQueue,taskType)
+                return t
             if taskType == 'Twitter.userBaseinfo':
-                return self._retrieveATaskuser(self.userBaseinfoQueue,taskType)
+                t,self.userBaseinfoQueue = self._retrieveATaskuser(self.userBaseinfoQueue,taskType)
+                return t
             if taskType == 'Twitter.userTimeline':
-                return self._retrieveATaskuser(self.userTimelineQueue,taskType)
+                t, self.userTimelineQueue = self._retrieveATaskuser(self.userTimelineQueue, taskType)
+                return t
             if taskType == 'Twitter.userFriends':
-                return self._retrieveATaskuser(self.userFriendsQueue,taskType)
+                t, self.userFriendsQueue = self._retrieveATaskuser(self.userFriendsQueue, taskType)
+                return t
 
             return common.TWTask(-1, 0, 'noneid', '0', '0', '3','name')  # def __init__(self,id,priority,fbid,tasktype,originalfbid,deep,name):
         except Exception as exc:
@@ -66,10 +70,21 @@ class TaskServer:
             exit(1)
         finally:
             mutex.release()
-
-    def _retrieveATaskuser(self,taskQueueS,taskType):
-        import copy
-        taskQueue = copy.copy(taskQueueS)
+    '''
+    可变数据类型与不可变数据类型
+            在python中哪些是可变数据类型，哪些是不可变数据类型。
+            可变数据类型：列表list和字典dict；
+            不可变数据类型：整型int、浮点型float、字符串型string和元组tuple。
+            python中的不可变数据类型，不允许变量的值发生变化，如果改变了变量的值，相当于是新建了一个对象，
+            而对于相同的值的对象，在内存中则只有一个对象，内部会有一个引用计数来记录有多少个变量引用这个对象；
+            可变数据类型，允许变量的值发生变化，即如果对变量进行append、+=等这种操作后，只是改变了变量的值，而不会新建一个对象，
+            变量引用的对象的地址也不会变化，不过对于相同的值的不同对象，在内存中则会存在不同的对象，即每个对象都有自己的地址，
+            相当于内存中对于同值的对象保存了多份，这里不存在引用计数，是实实在在的对象。
+    '''
+    def _retrieveATaskuser(self,taskQueue,taskType):
+        # import copy
+        # taskQueue = copy.deepcopy(taskQueueS)
+        # taskQueue = taskQueueS
         if taskQueue.empty():
             taskQueue = self.__twuserhelper.LoadTopNTask(10, taskType)
             print('reload {0} {1} task.'.format(taskQueue.qsize(), taskType))
@@ -87,10 +102,10 @@ class TaskServer:
                                                                                             task.fbid, task.name))
             # set the running state to 1 running
             self.__twuserhelper.SetRuningState(task.id, 1)
-            return task2
+            return task2,taskQueue
         else:
-            return common.TWTask(-1, 0, 'noneid', '0', '0', '3',
-                                 'name')  # def __init__(self,id,priority,fbid,tasktype,originalfbid,deep,name):
+            return common.TWTask(-1, 0, 'noneid', '0', '0', '3','name'),taskQueue
+            # def __init__(self,id,priority,fbid,tasktype,originalfbid,deep,name):
 
 
     def reportTWTaskUserComplete(self,taskid,runningState,completeDescription):
