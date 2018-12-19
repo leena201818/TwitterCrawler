@@ -3,14 +3,19 @@
 twitter crawler with a task dispatch server
 
 mysql保存种子账号、任务调度
+
 mongodb保存结果数据
 
 调度器+爬虫，运行在linux操作系统
+
 1、调取器负责读取任务表中的任务，接受爬虫请求返回任务，记录任务执行状态信息。
+
 2、爬虫从调取器请求任务，执行信息爬取，上报采集状态，直接向mongodb保存结果信息
 
 【配置】
+
 调取器、mysql任务数据库、mongodb结果数据库可以分别部署在不同的服务器上
+
 config.json
 {
         "apikeys": {          
