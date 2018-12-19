@@ -1,20 +1,21 @@
 # TwitterCrawler
 【简介】
+
 twitter crawler with a task dispatch server
 
 mysql保存种子账号、任务调度
 
 mongodb保存结果数据
 
-调度器+爬虫，运行在linux操作系统
+调度器+爬虫1：N模式，运行在linux操作系统，可部署在docker容器运行。
 
 1、调取器负责读取任务表中的任务，接受爬虫请求返回任务，记录任务执行状态信息。
 
 2、爬虫从调取器请求任务，执行信息爬取，上报采集状态，直接向mongodb保存结果信息
 
-【配置】
+【基本配置】
 
-调取器、mysql任务数据库、mongodb结果数据库可以分别部署在不同的服务器上
+调度器、mysql任务数据库、mongodb结果数据库可以分别部署在不同的服务器上，采用config.json文件进行配置
 
 config.json
 {
@@ -49,12 +50,53 @@ config.json
 
 0)在mysql创建任务库：在mysql中运行create_twitterdb.sql
 
-1）导入种子账号：importuserseed.py
+1）导入种子账号：importuserseed.py，种子文件seedfile.txt中第一列是必填项，采用screemname或twitterid均可
 
-2）生成任务：generateusertask.py
+2）生成任务：generateusertask.py，可以从手动种子生成任务，也可以从采集出来的friends关联账号生成，一般选择userInfo任务类型表示全采集
 
-3)启动调度器：taskserver.py
+3)启动调度器：taskserver.py，仅仅启动一个即可，当然可以通过配置启动多个调度器
 
-4)启动爬虫：twuserspider.py
+4)启动爬虫：twuserspider.py，爬虫部署在不同的docker，配置信息需要和所要链接的调度器相对应
 
 【代理设置】
+
+基本思路：采用shadowsocks + provxy代理方式访问外网，建议在宿主机运行ss+provxy，在docker容器内设置使用宿主机的provxy，实现docker容器内访问外网
+
+docker运行爬虫
+
+启动docker容器，容器内安装python3.6,以及requirements.txt模块即可，假设生成的image为“python:vim”
+
+方式1：目录映射，不需要拷贝程序文件到容器内，采用目录映射方式
+
+1. run in docker container,set the work directory
+sudo docker run -it -w /root/TwitterCrawler/ python:vim python /root/TwitterCrawler/twuserspider.py
+
+方式2：预先将程序文件制作到image,在容器内修改配置，此处的docker image为python:tw3
+
+===1、start the docker image，启动容器
+
+sudo docker run -it python:tw3 /bin/bash
+
+===2、activet the http_proxy in the container，在容器内激活代理环境变量
+
+source /etc/profile
+
+export http_proxy=http://宿主机ip:8118
+export https_proxy=http://宿主机ip:8118
+
+
+===3、copy the twitter developer account to the config.json in the container,or modify config.json with a new develop account
+
+open a new shell
+
+sudo docker cp path_to_new_account.config.json 222containerID:/root/TwitterCrawler/
+
+ie. sudo docker cp TwitterCrawler 7345dbdcc02a:/root
+
+===4、replace the config.json with a new develop account
+
+sudo docker cp TwitterCrawler/twapi/config-tw2.y.json 7345dbdcc02a:/root/TwitterCrawler/config.json
+
+===5、run the crawler in the container
+
+python twuserspider.py
