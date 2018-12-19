@@ -1,8 +1,8 @@
 {
-"server":"176.122.156.116",
-"server_port":10430,
+"server":"1.1.1.11",
+"server_port":1111,
 "local_port":1080,
-"password":"4rfv%TGB",
+"password":"ppp",
 "timeout":300,
 "method":"aes-256-cfb"
 }
