@@ -1,6 +1,7 @@
 # encoding=utf-8
 import json
 from pymongo import MongoClient
+import datetime
 
 class MongoHelper:
     def __init__(self):
@@ -15,12 +16,14 @@ class MongoHelper:
             u.pop('status')
             u.pop('entities')
             u['_id'] = "twitter_userid_%s"%u['id']
+            u['scrapped'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self._db.users.save(u)
 
     def insertfriends(self,user_id,friends):
         friends['_id'] = "twitter_friends_%s_%s"%(user_id,friends['next_cursor'])
         friends['twid'] = user_id
         friends['relationtype'] = 'friends'
+        u['scrapped'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self._db.user_relationships.save(friends)
 
     def inserttweets(self,user_id,tweet):
@@ -29,6 +32,7 @@ class MongoHelper:
         # tweet['_id'] = "twitter_tweets_%s"%(tweet['id'])
         tweet['twid'] = user_id
         tweet['posttype'] = "origin"    #origin,like,retweet
+        u['scrapped'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self._db.tweets.save(tweet)
 
 if __name__ == '__main__':
