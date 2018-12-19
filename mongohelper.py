@@ -23,7 +23,7 @@ class MongoHelper:
         friends['_id'] = "twitter_friends_%s_%s"%(user_id,friends['next_cursor'])
         friends['twid'] = user_id
         friends['relationtype'] = 'friends'
-        u['scrapped'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        friends['scrapped'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self._db.user_relationships.save(friends)
 
     def inserttweets(self,user_id,tweet):
@@ -32,7 +32,7 @@ class MongoHelper:
         # tweet['_id'] = "twitter_tweets_%s"%(tweet['id'])
         tweet['twid'] = user_id
         tweet['posttype'] = "origin"    #origin,like,retweet
-        u['scrapped'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        tweet['scrapped'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self._db.tweets.save(tweet)
 
 if __name__ == '__main__':

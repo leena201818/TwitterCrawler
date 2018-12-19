@@ -301,7 +301,7 @@ class TwitterCrawler(twython.Twython,metaclass=Singleton):
                 self.rate_limit_error_occured('statuses', '/statuses/user_timeline')
             except Exception as exc:
                 time.sleep(10)
-                logger.error("exception: %s; when fetching user_id: %d"%(exc, user_id))
+                logger.error("exception: %s; when fetching user_id: %s"%(exc, user_id))
                 retry_cnt -= 1
                 if (retry_cnt == 0):
                     logger.warn("exceed max retry... return")
