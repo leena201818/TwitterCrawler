@@ -66,37 +66,36 @@ docker运行爬虫
 
 启动docker容器，容器内安装python3.6,以及requirements.txt模块即可，假设生成的image为“python:vim”
 
-方式1：目录映射，不需要拷贝程序文件到容器内，采用目录映射方式
+方式1：目录映射，不需要拷贝程序文件到容器内，采用目录映射方式（run in docker container,set the work directory）
 
-1. run in docker container,set the work directory
 sudo docker run -it -w /root/TwitterCrawler/ python:vim python /root/TwitterCrawler/twuserspider.py
 
 方式2：预先将程序文件制作到image,在容器内修改配置，此处的docker image为python:tw3
 
-===1、start the docker image，启动容器
+===1、启动容器
 
-sudo docker run -it python:tw3 /bin/bash
+        sudo docker run -it python:tw3 /bin/bash
 
-===2、activet the http_proxy in the container，在容器内激活代理环境变量
+===2、在容器内设置外网访问代理，宿主机配置ss的方法详细看config文件夹内容
 
-source /etc/profile
+        export http_proxy=http://宿主机ip:8118
 
-export http_proxy=http://宿主机ip:8118
-export https_proxy=http://宿主机ip:8118
+        export https_proxy=http://宿主机ip:8118
 
+或者直接在terminal中运行以上两行，或者写入/etc/profile中source使之生效
+       
+===3、若容器内事先没有程序文件，也可以启动容器后，从宿主机拷贝，比如：
+     
+        sudo docker cp ~/TwitterCrawler 7345dbdcc02a:/root
+        
+===4、在容器内修改 TwitterCrawler/config.json，配置mysql、mongodb、调度器ip信息，以及twitter api key信息
 
-===3、copy the twitter developer account to the config.json in the container,or modify config.json with a new develop account
+也可以在宿主机上配置好config.json后，拷贝到docker中，具体操作如下
 
-open a new shell
+        在宿主机上打开一个shell
 
-sudo docker cp path_to_new_account.config.json 222containerID:/root/TwitterCrawler/
+        sudo docker cp path_to_new_account.config.json 容器ID:/root/TwitterCrawler/
 
-ie. sudo docker cp TwitterCrawler 7345dbdcc02a:/root
+===5、在容器内运行爬虫
 
-===4、replace the config.json with a new develop account
-
-sudo docker cp TwitterCrawler/twapi/config-tw2.y.json 7345dbdcc02a:/root/TwitterCrawler/config.json
-
-===5、run the crawler in the container
-
-python twuserspider.py
+        python twuserspider.py
