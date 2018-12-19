@@ -1,4 +1,12 @@
 【基本原理】
+      本机安装的sslocal负责和远端服务器进行数据通信，是对外的通信接口，采用socks协议；
+      
+      privoxy服务是代理服务，可以将http,https,ftp等对外通信转发到指定的sslocal进行外网访问；
+      
+      同一个局域网内，可以设置环境变量指向privxoy来实现共享上网；
+
+【基本步骤】
+
 1、sslocal -c /etc/shadowsocks.json 用来启用ss客户端，建立和远端服务器之间的数据传输，采用socks5协议
 
 "local_port":1080,
@@ -16,4 +24,8 @@ export http_proxy=http://127.0.0.1:8118
 export https_proxy=http://127.0.0.1:8118
 
 4、设置开机启动privoxy服务和sslocal服务
+
+sudo sslocal -c /etc/shadowsocks.json
+
+sudo /etc/init.d/privoxy start
 
