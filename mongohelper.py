@@ -13,8 +13,12 @@ class MongoHelper:
 
     def insertuser(self,users):
         for u in users:
-            u.pop('status')
-            u.pop('entities')
+            try:
+                u.pop('status')
+                u.pop('entities')
+            except:
+                pass
+
             u['_id'] = "twitter_userid_%s"%u['id']
             u['scrapped'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self._db.users.save(u)
@@ -27,8 +31,11 @@ class MongoHelper:
         self._db.user_relationships.save(friends)
 
     def inserttweets(self,user_id,tweet):
-        tweet.pop('entities')
-        tweet.pop('user')
+        try:
+            tweet.pop('entities')
+            tweet.pop('user')
+        except:
+            pass
         # tweet['_id'] = "twitter_tweets_%s"%(tweet['id'])
         tweet['twid'] = user_id
         tweet['posttype'] = "origin"    #origin,like,retweet
