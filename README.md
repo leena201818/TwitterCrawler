@@ -70,7 +70,7 @@ docker运行爬虫
 
 sudo docker run -it -w /root/TwitterCrawler/ python:vim python /root/TwitterCrawler/twuserspider.py
 
-方式2：预先将程序文件制作到image,在容器内修改配置，此处的docker image为python:tw3
+方式2：预先将程序文件制作到image,在容器内修改配置，此处的docker image为python:tw4
 
 ===1、启动容器
 
